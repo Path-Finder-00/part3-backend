@@ -14,32 +14,32 @@ morgan.token('body', function (req, res) { return JSON.stringify(req.body)})
 
 app.use(morgan('tiny'))
 
-// app.use(morgan((tokens, req, res) => {
-// 	return [
-// 		tokens.method(req, res),
-// 		tokens.url(req, res),
-// 		tokens.status(req, res),
-// 		tokens.res(req, res, 'content-length'), '-',
-// 		tokens['response-time'](req, res), 'ms',
-// 		tokens.body(req, res)
-// 	].join(' ')
-// }))
+app.use(morgan((tokens, req, res) => {
+	return [
+		tokens.method(req, res),
+		tokens.url(req, res),
+		tokens.status(req, res),
+		tokens.res(req, res, 'content-length'), '-',
+		tokens['response-time'](req, res), 'ms',
+		tokens.body(req, res)
+	].join(' ')
+}))
 
-// const requestLogger = (request, response, next) => {
-// 	console.log('Method:  ', request.method)
-// 	console.log('Path:  ', request.path)
-// 	console.log('Body:  ', request.body)
-// 	console.log('---')
-// 	next()
-// }
+const mongoose = require('mongoose')
 
-// app.use(requestLogger)
+const password = 'admin'
 
-// const unknownEndpoint = (request, response) => {
-// 	response.status(404).send({ error: 'unknown endpoint' })
-// }
+const url = `mongodb+srv://admin:${password}@cluster0.xsc4g6r.mongodb.net/thePhoneBook?retryWrites=true&w=majority`
 
-// app.use(unknownEndpoint)
+mongoose.set('strictQuery', false)
+mongoose.connect(url)
+
+const personSchema = new mongoose.Schema({
+    name: String,
+    number: String
+})
+
+const Person = mongoose.model('Person', personSchema)
 
 let persons = [
     { 
@@ -68,8 +68,14 @@ app.get('/', (request, response) => {
 	response.send('<h1>Hello World!</h1>')
 })
 
+// app.get('/api/persons', (request, response) => {
+// 	response.json(persons)
+// })
+
 app.get('/api/persons', (request, response) => {
-	response.json(persons)
+	Person.find({}).then(persons => {
+		response.json(persons)
+	})
 })
 
 app.get('/api/persons/:id', (request, response) => {
