@@ -5,8 +5,15 @@ POST http://localhost:3001/api/persons/ HTTP/1.1
 content-type: application/json
 
 {
-    "name": "o Hella",
-    "number": "530-211-375"
+    "name": "gowno",
 }
 ###
-GET http://localhost:3001/info
+PUT http://localhost:3001/api/persons/64d15f857fe0515510b11115 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "zmienilem",
+    "number": "to tez"
+}
+###
+DELETE http://localhost:3001/api/persons/64d1525816e574b22db46c92 HTTP/1.1
