@@ -6,6 +6,7 @@ content-type: application/json
 
 {
     "name": "gowno",
+    "number": "4"
 }
 ###
 PUT http://localhost:3001/api/persons/64d15f857fe0515510b11115 HTTP/1.1
